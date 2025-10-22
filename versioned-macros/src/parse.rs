@@ -15,12 +15,12 @@ pub fn parse_input(input: &DeriveInput) -> darling::Result<ParsedInput> {
     let receiver = VersionedReceiver::from_derive_input(input)?;
 
     Ok(ParsedInput {
-        ident: receiver.ident.clone(),
-        representation: receiver.rep.clone(),
-        mode: receiver.mode.clone(),
-        error: receiver.error.clone(),
+        ident: receiver.ident,
+        representation: receiver.rep,
+        mode: receiver.mode,
+        error: receiver.error,
         transparent: receiver.transparent.unwrap_or(false),
-        versions: receiver.chain.0.clone(),
+        versions: receiver.chain.0,
     })
 }
 
