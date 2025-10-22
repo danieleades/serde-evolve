@@ -29,44 +29,33 @@ fn generate_rep_enum(rep_name: &syn::Ident, version_types: &[syn::Path]) -> Toke
     let current_version =
         u32::try_from(num_versions).expect("too many versions for u32 discriminant");
 
-    let variants: Vec<TokenStream> = version_types
-        .iter()
-        .enumerate()
-        .map(|(idx, ty)| {
-            let variant_name = format_ident!("V{}", idx + 1);
-            let version_str = (idx + 1).to_string();
-            quote! {
-                #[serde(rename = #version_str)]
-                #variant_name(#ty)
-            }
-        })
-        .collect();
+    let variants = version_types.iter().enumerate().map(|(idx, ty)| {
+        let variant_name = format_ident!("V{}", idx + 1);
+        let version_str = (idx + 1).to_string();
+        quote! {
+            #[serde(rename = #version_str)]
+            #variant_name(#ty)
+        }
+    });
 
-    let version_match_arms: Vec<TokenStream> = (0..num_versions)
-        .map(|idx| {
-            let variant_name = format_ident!("V{}", idx + 1);
-            let version_num =
-                u32::try_from(idx + 1).expect("too many versions for u32 discriminant");
-            quote! {
-                Self::#variant_name(_) => #version_num
-            }
-        })
-        .collect();
+    let version_match_arms = (0..num_versions).map(|idx| {
+        let variant_name = format_ident!("V{}", idx + 1);
+        let version_num = u32::try_from(idx + 1).expect("too many versions for u32 discriminant");
+        quote! {
+            Self::#variant_name(_) => #version_num
+        }
+    });
 
-    let from_impls: Vec<TokenStream> = version_types
-        .iter()
-        .enumerate()
-        .map(|(idx, ty)| {
-            let variant_name = format_ident!("V{}", idx + 1);
-            quote! {
-                impl From<#ty> for #rep_name {
-                    fn from(v: #ty) -> Self {
-                        Self::#variant_name(v)
-                    }
+    let from_impls = version_types.iter().enumerate().map(|(idx, ty)| {
+        let variant_name = format_ident!("V{}", idx + 1);
+        quote! {
+            impl From<#ty> for #rep_name {
+                fn from(v: #ty) -> Self {
+                    Self::#variant_name(v)
                 }
             }
-        })
-        .collect();
+        }
+    });
 
     let latest_variant = format_ident!("V{}", num_versions);
 
@@ -108,18 +97,16 @@ fn generate_conversions(
 
     let rep_to_domain = match mode {
         Mode::Infallible => {
-            let variant_conversions: Vec<TokenStream> = (0..num_versions)
-                .map(|idx| {
-                    let variant_name = format_ident!("V{}", idx + 1);
-                    let chain = build_infallible_chain(domain_type, version_types, idx);
+            let variant_conversions = (0..num_versions).map(|idx| {
+                let variant_name = format_ident!("V{}", idx + 1);
+                let chain = build_infallible_chain(domain_type, version_types, idx);
 
-                    quote! {
-                        #rep_name::#variant_name(v) => {
-                            #chain
-                        }
+                quote! {
+                    #rep_name::#variant_name(v) => {
+                        #chain
                     }
-                })
-                .collect();
+                }
+            });
 
             quote! {
                 impl From<#rep_name> for #domain_type {
@@ -132,18 +119,16 @@ fn generate_conversions(
             }
         }
         Mode::Fallible { error } => {
-            let variant_conversions: Vec<TokenStream> = (0..num_versions)
-                .map(|idx| {
-                    let variant_name = format_ident!("V{}", idx + 1);
-                    let chain = build_fallible_chain(domain_type, version_types, idx);
+            let variant_conversions = (0..num_versions).map(|idx| {
+                let variant_name = format_ident!("V{}", idx + 1);
+                let chain = build_fallible_chain(domain_type, version_types, idx);
 
-                    quote! {
-                        #rep_name::#variant_name(v) => {
-                            #chain
-                        }
+                quote! {
+                    #rep_name::#variant_name(v) => {
+                        #chain
                     }
-                })
-                .collect();
+                }
+            });
 
             quote! {
                 impl core::convert::TryFrom<#rep_name> for #domain_type {
