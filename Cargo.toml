@@ -8,6 +8,7 @@ repository = "https://github.com/danieleades/serde-evolve"
 license = "MIT OR Apache-2.0"
 categories = ["encoding", "data-structures"]
 readme = "README.md"
+rust-version = "1.87.0"
 
 [workspace.lints.clippy]
 pedantic = "warn"
@@ -29,6 +30,7 @@ description = "Type-safe data schema evolution with compile-time verified migrat
 documentation = "https://docs.rs/serde-evolve"
 readme.workspace = true
 keywords = ["versioning", "serialization", "migration", "schema", "evolution"]
+rust-version.workspace = true
 
 [dependencies]
 serde-evolve-macros = { version = "0.1.0", path = "versioned-macros" }

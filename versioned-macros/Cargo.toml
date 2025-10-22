@@ -9,6 +9,7 @@ description = "Procedural macros for the serde-evolve crate"
 documentation = "https://docs.rs/serde-evolve-macros"
 readme.workspace = true
 keywords = ["versioning", "serialization", "migration", "schema", "macros"]
+rust-version.workspace = true
 
 [lib]
 proc-macro = true
