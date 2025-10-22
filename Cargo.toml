@@ -7,6 +7,7 @@ version = "0.1.0"
 repository = "https://github.com/danieleades/serde-evolve"
 license = "MIT OR Apache-2.0"
 categories = ["encoding", "data-structures"]
+readme = "README.md"
 
 [workspace.lints.clippy]
 pedantic = "warn"
@@ -26,7 +27,7 @@ license.workspace = true
 categories.workspace = true
 description = "Type-safe data schema evolution with compile-time verified migrations"
 documentation = "https://docs.rs/serde-evolve"
-readme = "README.md"
+readme.workspace = true
 keywords = ["versioning", "serialization", "migration", "schema", "evolution"]
 
 [dependencies]
