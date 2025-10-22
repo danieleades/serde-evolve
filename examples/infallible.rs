@@ -1,6 +1,6 @@
 //! Simple example demonstrating infallible migrations.
 //!
-//! Run with: `cargo run --example simple_infallible`
+//! Run with: `cargo run --example infallible`
 
 #![allow(missing_docs)]
 

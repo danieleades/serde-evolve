@@ -3,7 +3,7 @@
 //! With `transparent = true`, you can serialize/deserialize domain types directly
 //! without manually converting through the representation enum.
 //!
-//! Compare with `simple_infallible.rs` to see the explicit (default) approach.
+//! Compare with `infallible.rs` to see the explicit (default) approach.
 //!
 //! Run with: `cargo run --example transparent`
 
