@@ -1,16 +1,22 @@
 # serde-evolve - Type-Safe Data Schema Evolution
 
-A Rust library for versioning serialized data structures with compile-time verified migrations.
+[![Documentation](https://docs.rs/serde-evolve/badge.svg)](https://docs.rs/serde-evolve)
 
-## Status
-
-**⚠️ In Development** - Core functionality implemented, final type inference issue being resolved.
-
-See [`IMPLEMENTATION_STATUS.md`](./IMPLEMENTATION_STATUS.md) for details.
+A Rust library for versioning serialised data structures with compile-time verified migrations.
 
 ## Overview
 
-`serde-evolve` helps you evolve data schemas over time while maintaining backward compatibility with historical data. It separates **wire format** (serialization) from **domain types** (application logic), allowing you to deserialize any historical version and migrate it to your current domain model.
+`serde-evolve` helps you evolve data schemas over time while maintaining backward compatibility with historical data. It separates **wire format** (serialization) from **domain types** (application logic), allowing you to deserialise any historical version and migrate it to your current domain model.
+
+## Installation
+
+Add this to your `Cargo.toml`:
+
+```toml
+[dependencies]
+serde-evolve = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+```
 
 ## Key Features
 
@@ -122,7 +128,7 @@ let rep: UserVersions = serde_json::from_str(json)?;
 let user: User = rep.try_into()?;
 ```
 
-The `transparent = true` flag generates custom `Serialize`/`Deserialize` implementations that allow direct domain type serialization:
+The `transparent = true` flag generates custom `Serialize`/`Deserialize` implementations that allow direct domain type serialisation:
 
 ```rust,ignore
 #[versioned(
@@ -141,7 +147,7 @@ let json = serde_json::to_string(&user)?;
 
 ## Representation Format
 
-Data is serialized with an embedded `_version` tag:
+Data is serialised with an embedded `_version` tag:
 
 ```json
 {
@@ -154,7 +160,7 @@ Serde's `#[serde(tag = "_version")]` handles routing to the correct variant.
 
 ## Design Principles
 
-1. **Representation/Domain Separation**: Domain types never leak serialization concerns
+1. **Representation/Domain Separation**: Domain types never leak serialisation concerns
 2. **Standard Traits**: Uses Rust's `From`/`TryInto`, not custom APIs
 3. **Type Safety**: Missing migrations cause compile errors
 4. **User Control**: You define all version structs and migrations
