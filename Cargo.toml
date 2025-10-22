@@ -1,0 +1,37 @@
+[workspace]
+members = [".", "versioned-macros"]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+
+[workspace.lints.clippy]
+pedantic = "warn"
+nursery = "warn"
+cargo = "warn"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+missing_debug_implementations = "warn"
+
+[package]
+name = "serde-evolve"
+version.workspace = true
+edition.workspace = true
+description = "Type-safe data schema evolution with compile-time verified migrations"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/serde-evolve"
+readme = "README.md"
+keywords = ["versioning", "serialization", "migration", "schema", "evolution"]
+categories = ["encoding", "data-structures"]
+
+[dependencies]
+serde-evolve-macros = { version = "0.1.0", path = "versioned-macros" }
+
+[dev-dependencies]
+anyhow = "1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[lints]
+workspace = true
